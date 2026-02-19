@@ -14,9 +14,14 @@
 """  # noqa: E501
 
 # import models into model package
+from ninjapear.models.address import Address
+from ninjapear.models.company_details_response import CompanyDetailsResponse
 from ninjapear.models.credit_balance_response import CreditBalanceResponse
 from ninjapear.models.customer_company import CustomerCompany
 from ninjapear.models.customer_listing_response import CustomerListingResponse
 from ninjapear.models.disposable_email_response import DisposableEmailResponse
+from ninjapear.models.employee_count_response import EmployeeCountResponse
 from ninjapear.models.error import Error
+from ninjapear.models.executive import Executive
+from ninjapear.models.public_listing import PublicListing
 

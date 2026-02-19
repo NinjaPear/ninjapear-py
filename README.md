@@ -83,14 +83,15 @@ with ninjapear.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = ninjapear.CompanyAPIApi(api_client)
     website = 'https://www.stripe.com' # str | The website URL of the target company
+    include_employee_count = False # bool | Fetch fresh employee count data via web search. Adds 2 credits. (optional) (default to False)
 
     try:
-        # Company Logo
-        api_response = api_instance.get_company_logo(website)
-        print("The response of CompanyAPIApi->get_company_logo:\n")
+        # Company Details
+        api_response = api_instance.get_company_details(website, include_employee_count=include_employee_count)
+        print("The response of CompanyAPIApi->get_company_details:\n")
         pprint(api_response)
     except ApiException as e:
-        print("Exception when calling CompanyAPIApi->get_company_logo: %s\n" % e)
+        print("Exception when calling CompanyAPIApi->get_company_details: %s\n" % e)
 
 ```
 
@@ -100,7 +101,9 @@ All URIs are relative to *https://nubela.co*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
+*CompanyAPIApi* | [**get_company_details**](docs/CompanyAPIApi.md#get_company_details) | **GET** /api/v1/company/details | Company Details
 *CompanyAPIApi* | [**get_company_logo**](docs/CompanyAPIApi.md#get_company_logo) | **GET** /api/v1/company/logo | Company Logo
+*CompanyAPIApi* | [**get_employee_count**](docs/CompanyAPIApi.md#get_employee_count) | **GET** /api/v1/company/employee-count | Employee Count
 *ContactAPIApi* | [**check_disposable_email**](docs/ContactAPIApi.md#check_disposable_email) | **GET** /api/v1/contact/disposable-email | Disposable Email Checker
 *CustomerAPIApi* | [**get_customer_listing**](docs/CustomerAPIApi.md#get_customer_listing) | **GET** /api/v1/customer/listing | Customer Listing
 *MetaAPIApi* | [**get_credit_balance**](docs/MetaAPIApi.md#get_credit_balance) | **GET** /api/v1/meta/credit-balance | View Credit Balance
@@ -108,11 +111,16 @@ Class | Method | HTTP request | Description
 
 ## Documentation For Models
 
+ - [Address](docs/Address.md)
+ - [CompanyDetailsResponse](docs/CompanyDetailsResponse.md)
  - [CreditBalanceResponse](docs/CreditBalanceResponse.md)
  - [CustomerCompany](docs/CustomerCompany.md)
  - [CustomerListingResponse](docs/CustomerListingResponse.md)
  - [DisposableEmailResponse](docs/DisposableEmailResponse.md)
+ - [EmployeeCountResponse](docs/EmployeeCountResponse.md)
  - [Error](docs/Error.md)
+ - [Executive](docs/Executive.md)
+ - [PublicListing](docs/PublicListing.md)
 
 
 <a id="documentation-for-authorization"></a>

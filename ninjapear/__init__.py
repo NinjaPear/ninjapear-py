@@ -32,11 +32,16 @@ __all__ = [
     "ApiKeyError",
     "ApiAttributeError",
     "ApiException",
+    "Address",
+    "CompanyDetailsResponse",
     "CreditBalanceResponse",
     "CustomerCompany",
     "CustomerListingResponse",
     "DisposableEmailResponse",
+    "EmployeeCountResponse",
     "Error",
+    "Executive",
+    "PublicListing",
 ]
 
 # import apis into sdk package
@@ -57,9 +62,14 @@ from ninjapear.exceptions import ApiAttributeError as ApiAttributeError
 from ninjapear.exceptions import ApiException as ApiException
 
 # import models into sdk package
+from ninjapear.models.address import Address as Address
+from ninjapear.models.company_details_response import CompanyDetailsResponse as CompanyDetailsResponse
 from ninjapear.models.credit_balance_response import CreditBalanceResponse as CreditBalanceResponse
 from ninjapear.models.customer_company import CustomerCompany as CustomerCompany
 from ninjapear.models.customer_listing_response import CustomerListingResponse as CustomerListingResponse
 from ninjapear.models.disposable_email_response import DisposableEmailResponse as DisposableEmailResponse
+from ninjapear.models.employee_count_response import EmployeeCountResponse as EmployeeCountResponse
 from ninjapear.models.error import Error as Error
+from ninjapear.models.executive import Executive as Executive
+from ninjapear.models.public_listing import PublicListing as PublicListing
 
