@@ -18,17 +18,30 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class UpdateFeedRequest(BaseModel):
     """
-    EmployeeCountResponse
+    UpdateFeedRequest
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    name: Optional[StrictStr] = Field(default=None, description="New feed name")
+    is_public: Optional[StrictBool] = Field(default=None, description="Whether the RSS feed should be publicly accessible")
+    is_suspended: Optional[StrictBool] = Field(default=None, description="Manually suspend or resume the feed")
+    suspension_reason: Optional[StrictStr] = Field(default=None, description="Reason for suspension (required when is_suspended=true)")
+    __properties: ClassVar[List[str]] = ["name", "is_public", "is_suspended", "suspension_reason"]
+
+    @field_validator('suspension_reason')
+    def suspension_reason_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['manual']):
+            raise ValueError("must be one of enum values ('manual')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +61,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of UpdateFeedRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +86,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of UpdateFeedRequest from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +94,10 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "name": obj.get("name"),
+            "is_public": obj.get("is_public"),
+            "is_suspended": obj.get("is_suspended"),
+            "suspension_reason": obj.get("suspension_reason")
         })
         return _obj
 

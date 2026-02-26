@@ -5,7 +5,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds.
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -23,6 +23,7 @@ __all__ = [
     "ContactAPIApi",
     "CustomerAPIApi",
     "MetaAPIApi",
+    "UpdatesAPIApi",
     "ApiResponse",
     "ApiClient",
     "Configuration",
@@ -32,8 +33,11 @@ __all__ = [
     "ApiKeyError",
     "ApiAttributeError",
     "ApiException",
+    "AddTargetRequest",
     "Address",
     "CompanyDetailsResponse",
+    "CreateFeedRequest",
+    "CreateFeedRequestTargetsInner",
     "CreditBalanceResponse",
     "CustomerCompany",
     "CustomerListingResponse",
@@ -41,7 +45,15 @@ __all__ = [
     "EmployeeCountResponse",
     "Error",
     "Executive",
+    "Feed",
+    "FeedListResponse",
+    "FeedSummary",
+    "MessageResponse",
     "PublicListing",
+    "Target",
+    "TargetSettings",
+    "UpdateFeedRequest",
+    "UpdateTargetRequest",
 ]
 
 # import apis into sdk package
@@ -49,6 +61,7 @@ from ninjapear.api.company_api_api import CompanyAPIApi as CompanyAPIApi
 from ninjapear.api.contact_api_api import ContactAPIApi as ContactAPIApi
 from ninjapear.api.customer_api_api import CustomerAPIApi as CustomerAPIApi
 from ninjapear.api.meta_api_api import MetaAPIApi as MetaAPIApi
+from ninjapear.api.updates_api_api import UpdatesAPIApi as UpdatesAPIApi
 
 # import ApiClient
 from ninjapear.api_response import ApiResponse as ApiResponse
@@ -62,8 +75,11 @@ from ninjapear.exceptions import ApiAttributeError as ApiAttributeError
 from ninjapear.exceptions import ApiException as ApiException
 
 # import models into sdk package
+from ninjapear.models.add_target_request import AddTargetRequest as AddTargetRequest
 from ninjapear.models.address import Address as Address
 from ninjapear.models.company_details_response import CompanyDetailsResponse as CompanyDetailsResponse
+from ninjapear.models.create_feed_request import CreateFeedRequest as CreateFeedRequest
+from ninjapear.models.create_feed_request_targets_inner import CreateFeedRequestTargetsInner as CreateFeedRequestTargetsInner
 from ninjapear.models.credit_balance_response import CreditBalanceResponse as CreditBalanceResponse
 from ninjapear.models.customer_company import CustomerCompany as CustomerCompany
 from ninjapear.models.customer_listing_response import CustomerListingResponse as CustomerListingResponse
@@ -71,5 +87,13 @@ from ninjapear.models.disposable_email_response import DisposableEmailResponse a
 from ninjapear.models.employee_count_response import EmployeeCountResponse as EmployeeCountResponse
 from ninjapear.models.error import Error as Error
 from ninjapear.models.executive import Executive as Executive
+from ninjapear.models.feed import Feed as Feed
+from ninjapear.models.feed_list_response import FeedListResponse as FeedListResponse
+from ninjapear.models.feed_summary import FeedSummary as FeedSummary
+from ninjapear.models.message_response import MessageResponse as MessageResponse
 from ninjapear.models.public_listing import PublicListing as PublicListing
+from ninjapear.models.target import Target as Target
+from ninjapear.models.target_settings import TargetSettings as TargetSettings
+from ninjapear.models.update_feed_request import UpdateFeedRequest as UpdateFeedRequest
+from ninjapear.models.update_target_request import UpdateTargetRequest as UpdateTargetRequest
 

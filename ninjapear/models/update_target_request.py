@@ -18,17 +18,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
-from typing import Any, ClassVar, Dict, List, Optional
+from pydantic import BaseModel, ConfigDict
+from typing import Any, ClassVar, Dict, List
+from ninjapear.models.target_settings import TargetSettings
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class UpdateTargetRequest(BaseModel):
     """
-    EmployeeCountResponse
+    UpdateTargetRequest
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    settings: TargetSettings
+    __properties: ClassVar[List[str]] = ["settings"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +49,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of UpdateTargetRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +70,14 @@ class EmployeeCountResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of settings
+        if self.settings:
+            _dict['settings'] = self.settings.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of UpdateTargetRequest from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +85,7 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "settings": TargetSettings.from_dict(obj["settings"]) if obj.get("settings") is not None else None
         })
         return _obj
 

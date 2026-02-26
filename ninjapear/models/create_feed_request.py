@@ -18,17 +18,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
+from ninjapear.models.create_feed_request_targets_inner import CreateFeedRequestTargetsInner
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class CreateFeedRequest(BaseModel):
     """
-    EmployeeCountResponse
+    CreateFeedRequest
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    name: Optional[StrictStr] = Field(default=None, description="Feed display name. Auto-generated if not provided.")
+    targets: Annotated[List[CreateFeedRequestTargetsInner], Field(min_length=1)] = Field(description="Initial targets to monitor")
+    is_public: Optional[StrictBool] = Field(default=False, description="Whether the RSS feed should be publicly accessible")
+    __properties: ClassVar[List[str]] = ["name", "targets", "is_public"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +52,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of CreateFeedRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +73,18 @@ class EmployeeCountResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in targets (list)
+        _items = []
+        if self.targets:
+            for _item_targets in self.targets:
+                if _item_targets:
+                    _items.append(_item_targets.to_dict())
+            _dict['targets'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of CreateFeedRequest from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +92,9 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "name": obj.get("name"),
+            "targets": [CreateFeedRequestTargetsInner.from_dict(_item) for _item in obj["targets"]] if obj.get("targets") is not None else None,
+            "is_public": obj.get("is_public") if obj.get("is_public") is not None else False
         })
         return _obj
 

@@ -18,17 +18,17 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class MessageResponse(BaseModel):
     """
-    EmployeeCountResponse
+    MessageResponse
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    message: Optional[StrictStr] = Field(default=None, description="Confirmation message")
+    __properties: ClassVar[List[str]] = ["message"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +48,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of MessageResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +73,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of MessageResponse from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +81,7 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "message": obj.get("message")
         })
         return _obj
 

@@ -18,17 +18,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictBool
 from typing import Any, ClassVar, Dict, List, Optional
+from typing_extensions import Annotated
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class TargetSettings(BaseModel):
     """
-    EmployeeCountResponse
+    Monitoring settings for a target.
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    monitor_blog: Optional[StrictBool] = Field(default=True, description="Whether to monitor the company's blog RSS feeds")
+    monitor_x: Optional[StrictBool] = Field(default=True, description="Whether to monitor the company's X (Twitter) account")
+    monitor_website: Optional[StrictBool] = Field(default=True, description="Whether to monitor the company's website for content changes")
+    frequency_days: Optional[Annotated[int, Field(le=30, strict=True, ge=1)]] = Field(default=7, description="How often to poll for updates (in days)")
+    __properties: ClassVar[List[str]] = ["monitor_blog", "monitor_x", "monitor_website", "frequency_days"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +52,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of TargetSettings from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -73,7 +77,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of TargetSettings from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +85,10 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "monitor_blog": obj.get("monitor_blog") if obj.get("monitor_blog") is not None else True,
+            "monitor_x": obj.get("monitor_x") if obj.get("monitor_x") is not None else True,
+            "monitor_website": obj.get("monitor_website") if obj.get("monitor_website") is not None else True,
+            "frequency_days": obj.get("frequency_days") if obj.get("frequency_days") is not None else 7
         })
         return _obj
 

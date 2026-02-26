@@ -18,28 +18,35 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
+from ninjapear.models.target import Target
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Executive(BaseModel):
+class Feed(BaseModel):
     """
-    Executive
+    Feed
     """ # noqa: E501
-    name: Optional[StrictStr] = Field(default=None, description="Full name of the executive")
-    title: Optional[StrictStr] = Field(default=None, description="Job title")
-    role: Optional[StrictStr] = Field(default=None, description="Normalized role type")
-    __properties: ClassVar[List[str]] = ["name", "title", "role"]
+    id: Optional[StrictStr] = Field(default=None, description="Unique feed identifier")
+    name: Optional[StrictStr] = Field(default=None, description="Feed display name")
+    is_public: Optional[StrictBool] = Field(default=None, description="Whether the RSS feed is publicly accessible without a token")
+    is_suspended: Optional[StrictBool] = Field(default=None, description="Whether the feed is currently suspended (e.g. due to insufficient credits)")
+    suspension_reason: Optional[StrictStr] = Field(default=None, description="Reason for suspension, if suspended")
+    rss_url: Optional[StrictStr] = Field(default=None, description="URL to the RSS feed. Includes a token query parameter for private feeds.")
+    created_at: Optional[datetime] = Field(default=None, description="When the feed was created")
+    targets: Optional[List[Target]] = Field(default=None, description="List of monitored targets in this feed")
+    __properties: ClassVar[List[str]] = ["id", "name", "is_public", "is_suspended", "suspension_reason", "rss_url", "created_at", "targets"]
 
-    @field_validator('role')
-    def role_validate_enum(cls, value):
+    @field_validator('suspension_reason')
+    def suspension_reason_validate_enum(cls, value):
         """Validates the enum"""
         if value is None:
             return value
 
-        if value not in set(['CEO', 'CFO', 'COO', 'CTO', 'CMO', 'PRESIDENT', 'VICE_PRESIDENT', 'DIRECTOR', 'BOARD_MEMBER', 'CHAIRMAN', 'FOUNDER', 'OTHER']):
-            raise ValueError("must be one of enum values ('CEO', 'CFO', 'COO', 'CTO', 'CMO', 'PRESIDENT', 'VICE_PRESIDENT', 'DIRECTOR', 'BOARD_MEMBER', 'CHAIRMAN', 'FOUNDER', 'OTHER')")
+        if value not in set(['insufficient_credits', 'manual']):
+            raise ValueError("must be one of enum values ('insufficient_credits', 'manual')")
         return value
 
     model_config = ConfigDict(
@@ -60,7 +67,7 @@ class Executive(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Executive from a JSON string"""
+        """Create an instance of Feed from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -81,21 +88,23 @@ class Executive(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if title (nullable) is None
+        # override the default output from pydantic by calling `to_dict()` of each item in targets (list)
+        _items = []
+        if self.targets:
+            for _item_targets in self.targets:
+                if _item_targets:
+                    _items.append(_item_targets.to_dict())
+            _dict['targets'] = _items
+        # set to None if suspension_reason (nullable) is None
         # and model_fields_set contains the field
-        if self.title is None and "title" in self.model_fields_set:
-            _dict['title'] = None
-
-        # set to None if role (nullable) is None
-        # and model_fields_set contains the field
-        if self.role is None and "role" in self.model_fields_set:
-            _dict['role'] = None
+        if self.suspension_reason is None and "suspension_reason" in self.model_fields_set:
+            _dict['suspension_reason'] = None
 
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Executive from a dict"""
+        """Create an instance of Feed from a dict"""
         if obj is None:
             return None
 
@@ -103,9 +112,14 @@ class Executive(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "id": obj.get("id"),
             "name": obj.get("name"),
-            "title": obj.get("title"),
-            "role": obj.get("role")
+            "is_public": obj.get("is_public"),
+            "is_suspended": obj.get("is_suspended"),
+            "suspension_reason": obj.get("suspension_reason"),
+            "rss_url": obj.get("rss_url"),
+            "created_at": obj.get("created_at"),
+            "targets": [Target.from_dict(_item) for _item in obj["targets"]] if obj.get("targets") is not None else None
         })
         return _obj
 

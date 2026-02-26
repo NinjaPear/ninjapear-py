@@ -18,17 +18,25 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class FeedSummary(BaseModel):
     """
-    EmployeeCountResponse
+    Feed summary returned in list endpoints (without individual targets).
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    id: Optional[StrictStr] = Field(default=None, description="Unique feed identifier")
+    name: Optional[StrictStr] = Field(default=None, description="Feed display name")
+    is_public: Optional[StrictBool] = Field(default=None, description="Whether the RSS feed is publicly accessible without a token")
+    is_suspended: Optional[StrictBool] = Field(default=None, description="Whether the feed is currently suspended")
+    suspension_reason: Optional[StrictStr] = Field(default=None, description="Reason for suspension, if suspended")
+    rss_url: Optional[StrictStr] = Field(default=None, description="URL to the RSS feed")
+    created_at: Optional[datetime] = Field(default=None, description="When the feed was created")
+    target_count: Optional[StrictInt] = Field(default=None, description="Number of active targets in this feed")
+    __properties: ClassVar[List[str]] = ["id", "name", "is_public", "is_suspended", "suspension_reason", "rss_url", "created_at", "target_count"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +56,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of FeedSummary from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +77,16 @@ class EmployeeCountResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # set to None if suspension_reason (nullable) is None
+        # and model_fields_set contains the field
+        if self.suspension_reason is None and "suspension_reason" in self.model_fields_set:
+            _dict['suspension_reason'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of FeedSummary from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +94,14 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "id": obj.get("id"),
+            "name": obj.get("name"),
+            "is_public": obj.get("is_public"),
+            "is_suspended": obj.get("is_suspended"),
+            "suspension_reason": obj.get("suspension_reason"),
+            "rss_url": obj.get("rss_url"),
+            "created_at": obj.get("created_at"),
+            "target_count": obj.get("target_count")
         })
         return _obj
 

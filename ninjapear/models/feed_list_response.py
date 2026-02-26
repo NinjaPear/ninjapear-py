@@ -18,17 +18,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from ninjapear.models.feed_summary import FeedSummary
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class FeedListResponse(BaseModel):
     """
-    EmployeeCountResponse
+    FeedListResponse
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    feeds: Optional[List[FeedSummary]] = Field(default=None, description="List of feeds")
+    __properties: ClassVar[List[str]] = ["feeds"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +49,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of FeedListResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +70,18 @@ class EmployeeCountResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in feeds (list)
+        _items = []
+        if self.feeds:
+            for _item_feeds in self.feeds:
+                if _item_feeds:
+                    _items.append(_item_feeds.to_dict())
+            _dict['feeds'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of FeedListResponse from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +89,7 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "feeds": [FeedSummary.from_dict(_item) for _item in obj["feeds"]] if obj.get("feeds") is not None else None
         })
         return _obj
 

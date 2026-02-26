@@ -18,17 +18,24 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
+from ninjapear.models.target_settings import TargetSettings
 from typing import Optional, Set
 from typing_extensions import Self
 
-class EmployeeCountResponse(BaseModel):
+class Target(BaseModel):
     """
-    EmployeeCountResponse
+    Target
     """ # noqa: E501
-    employee_count: Optional[StrictInt] = Field(default=None, description="Estimated employee count")
-    __properties: ClassVar[List[str]] = ["employee_count"]
+    id: Optional[StrictStr] = Field(default=None, description="Unique target identifier")
+    website_url: Optional[StrictStr] = Field(default=None, description="The website URL being monitored")
+    settings: Optional[TargetSettings] = None
+    last_polled_at: Optional[datetime] = Field(default=None, description="When the target was last polled for updates")
+    is_baseline_complete: Optional[StrictBool] = Field(default=None, description="Whether the initial baseline poll has completed. Items are only generated after the baseline.")
+    created_at: Optional[datetime] = Field(default=None, description="When the target was created")
+    __properties: ClassVar[List[str]] = ["id", "website_url", "settings", "last_polled_at", "is_baseline_complete", "created_at"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -48,7 +55,7 @@ class EmployeeCountResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a JSON string"""
+        """Create an instance of Target from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -69,11 +76,19 @@ class EmployeeCountResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of settings
+        if self.settings:
+            _dict['settings'] = self.settings.to_dict()
+        # set to None if last_polled_at (nullable) is None
+        # and model_fields_set contains the field
+        if self.last_polled_at is None and "last_polled_at" in self.model_fields_set:
+            _dict['last_polled_at'] = None
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of EmployeeCountResponse from a dict"""
+        """Create an instance of Target from a dict"""
         if obj is None:
             return None
 
@@ -81,7 +96,12 @@ class EmployeeCountResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "employee_count": obj.get("employee_count")
+            "id": obj.get("id"),
+            "website_url": obj.get("website_url"),
+            "settings": TargetSettings.from_dict(obj["settings"]) if obj.get("settings") is not None else None,
+            "last_polled_at": obj.get("last_polled_at"),
+            "is_baseline_complete": obj.get("is_baseline_complete"),
+            "created_at": obj.get("created_at")
         })
         return _obj
 
