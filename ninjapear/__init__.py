@@ -5,7 +5,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -15,15 +15,16 @@
 """  # noqa: E501
 
 
-__version__ = "1.0.0"
+__version__ = "1.3.0"
 
 # Define package exports
 __all__ = [
     "CompanyAPIApi",
     "ContactAPIApi",
     "CustomerAPIApi",
+    "EmployeeAPIApi",
     "MetaAPIApi",
-    "UpdatesAPIApi",
+    "MonitorAPIApi",
     "ApiResponse",
     "ApiClient",
     "Configuration",
@@ -36,32 +37,41 @@ __all__ = [
     "AddTargetRequest",
     "Address",
     "CompanyDetailsResponse",
+    "CompanyFundingResponse",
+    "CompanyUpdate",
+    "CompanyUpdatesResponse",
     "CreateFeedRequest",
     "CreateFeedRequestTargetsInner",
     "CreditBalanceResponse",
     "CustomerCompany",
     "CustomerListingResponse",
     "DisposableEmailResponse",
+    "Education",
     "EmployeeCountResponse",
     "Error",
     "Executive",
     "Feed",
     "FeedListResponse",
     "FeedSummary",
+    "FundingRound",
+    "Investor",
     "MessageResponse",
+    "PersonProfileResponse",
     "PublicListing",
     "Target",
     "TargetSettings",
     "UpdateFeedRequest",
     "UpdateTargetRequest",
+    "WorkExperience",
 ]
 
 # import apis into sdk package
 from ninjapear.api.company_api_api import CompanyAPIApi as CompanyAPIApi
 from ninjapear.api.contact_api_api import ContactAPIApi as ContactAPIApi
 from ninjapear.api.customer_api_api import CustomerAPIApi as CustomerAPIApi
+from ninjapear.api.employee_api_api import EmployeeAPIApi as EmployeeAPIApi
 from ninjapear.api.meta_api_api import MetaAPIApi as MetaAPIApi
-from ninjapear.api.updates_api_api import UpdatesAPIApi as UpdatesAPIApi
+from ninjapear.api.monitor_api_api import MonitorAPIApi as MonitorAPIApi
 
 # import ApiClient
 from ninjapear.api_response import ApiResponse as ApiResponse
@@ -78,22 +88,30 @@ from ninjapear.exceptions import ApiException as ApiException
 from ninjapear.models.add_target_request import AddTargetRequest as AddTargetRequest
 from ninjapear.models.address import Address as Address
 from ninjapear.models.company_details_response import CompanyDetailsResponse as CompanyDetailsResponse
+from ninjapear.models.company_funding_response import CompanyFundingResponse as CompanyFundingResponse
+from ninjapear.models.company_update import CompanyUpdate as CompanyUpdate
+from ninjapear.models.company_updates_response import CompanyUpdatesResponse as CompanyUpdatesResponse
 from ninjapear.models.create_feed_request import CreateFeedRequest as CreateFeedRequest
 from ninjapear.models.create_feed_request_targets_inner import CreateFeedRequestTargetsInner as CreateFeedRequestTargetsInner
 from ninjapear.models.credit_balance_response import CreditBalanceResponse as CreditBalanceResponse
 from ninjapear.models.customer_company import CustomerCompany as CustomerCompany
 from ninjapear.models.customer_listing_response import CustomerListingResponse as CustomerListingResponse
 from ninjapear.models.disposable_email_response import DisposableEmailResponse as DisposableEmailResponse
+from ninjapear.models.education import Education as Education
 from ninjapear.models.employee_count_response import EmployeeCountResponse as EmployeeCountResponse
 from ninjapear.models.error import Error as Error
 from ninjapear.models.executive import Executive as Executive
 from ninjapear.models.feed import Feed as Feed
 from ninjapear.models.feed_list_response import FeedListResponse as FeedListResponse
 from ninjapear.models.feed_summary import FeedSummary as FeedSummary
+from ninjapear.models.funding_round import FundingRound as FundingRound
+from ninjapear.models.investor import Investor as Investor
 from ninjapear.models.message_response import MessageResponse as MessageResponse
+from ninjapear.models.person_profile_response import PersonProfileResponse as PersonProfileResponse
 from ninjapear.models.public_listing import PublicListing as PublicListing
 from ninjapear.models.target import Target as Target
 from ninjapear.models.target_settings import TargetSettings as TargetSettings
 from ninjapear.models.update_feed_request import UpdateFeedRequest as UpdateFeedRequest
 from ninjapear.models.update_target_request import UpdateTargetRequest as UpdateTargetRequest
+from ninjapear.models.work_experience import WorkExperience as WorkExperience
 

@@ -3,7 +3,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -92,7 +92,7 @@ class ApiClient:
             self.default_headers[header_name] = header_value
         self.cookie = cookie
         # Set default User-Agent.
-        self.user_agent = 'OpenAPI-Generator/1.0.0/python'
+        self.user_agent = 'OpenAPI-Generator/1.3.0/python'
         self.client_side_validation = configuration.client_side_validation
 
     def __enter__(self):

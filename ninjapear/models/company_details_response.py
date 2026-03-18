@@ -3,7 +3,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -49,7 +49,12 @@ class CompanyDetailsResponse(BaseModel):
     addresses: Optional[List[Address]] = Field(default=None, description="List of company addresses")
     executives: Optional[List[Executive]] = Field(default=None, description="List of company executives and board members")
     public_listing: Optional[PublicListing] = Field(default=None, description="Public company data. Null for private companies.")
-    __properties: ClassVar[List[str]] = ["websites", "description", "industry", "company_type", "founded_year", "specialties", "name", "tagline", "logo_url", "cover_pic_url", "facebook_url", "twitter_url", "instagram_url", "employee_count", "employee_count_range_min", "employee_count_range_max", "addresses", "executives", "public_listing"]
+    follower_count: Optional[StrictInt] = Field(default=None, description="Twitter/X follower count (only included when follower_count=include query param is used)")
+    following_count: Optional[StrictInt] = Field(default=None, description="Twitter/X following count (only included when follower_count=include query param is used)")
+    similar_companies: Optional[StrictStr] = Field(default=None, description="URL to the competitor listing endpoint for this company")
+    updates: Optional[StrictStr] = Field(default=None, description="URL to the company updates endpoint for this company")
+    funding: Optional[StrictStr] = Field(default=None, description="URL to the company funding endpoint for this company")
+    __properties: ClassVar[List[str]] = ["websites", "description", "industry", "company_type", "founded_year", "specialties", "name", "tagline", "logo_url", "cover_pic_url", "facebook_url", "twitter_url", "instagram_url", "employee_count", "employee_count_range_min", "employee_count_range_max", "addresses", "executives", "public_listing", "follower_count", "following_count", "similar_companies", "updates", "funding"]
 
     @field_validator('company_type')
     def company_type_validate_enum(cls, value):
@@ -212,6 +217,31 @@ class CompanyDetailsResponse(BaseModel):
         if self.public_listing is None and "public_listing" in self.model_fields_set:
             _dict['public_listing'] = None
 
+        # set to None if follower_count (nullable) is None
+        # and model_fields_set contains the field
+        if self.follower_count is None and "follower_count" in self.model_fields_set:
+            _dict['follower_count'] = None
+
+        # set to None if following_count (nullable) is None
+        # and model_fields_set contains the field
+        if self.following_count is None and "following_count" in self.model_fields_set:
+            _dict['following_count'] = None
+
+        # set to None if similar_companies (nullable) is None
+        # and model_fields_set contains the field
+        if self.similar_companies is None and "similar_companies" in self.model_fields_set:
+            _dict['similar_companies'] = None
+
+        # set to None if updates (nullable) is None
+        # and model_fields_set contains the field
+        if self.updates is None and "updates" in self.model_fields_set:
+            _dict['updates'] = None
+
+        # set to None if funding (nullable) is None
+        # and model_fields_set contains the field
+        if self.funding is None and "funding" in self.model_fields_set:
+            _dict['funding'] = None
+
         return _dict
 
     @classmethod
@@ -242,7 +272,12 @@ class CompanyDetailsResponse(BaseModel):
             "employee_count_range_max": obj.get("employee_count_range_max"),
             "addresses": [Address.from_dict(_item) for _item in obj["addresses"]] if obj.get("addresses") is not None else None,
             "executives": [Executive.from_dict(_item) for _item in obj["executives"]] if obj.get("executives") is not None else None,
-            "public_listing": PublicListing.from_dict(obj["public_listing"]) if obj.get("public_listing") is not None else None
+            "public_listing": PublicListing.from_dict(obj["public_listing"]) if obj.get("public_listing") is not None else None,
+            "follower_count": obj.get("follower_count"),
+            "following_count": obj.get("following_count"),
+            "similar_companies": obj.get("similar_companies"),
+            "updates": obj.get("updates"),
+            "funding": obj.get("funding")
         })
         return _obj
 

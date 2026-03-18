@@ -4,7 +4,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -17,22 +17,30 @@
 from ninjapear.models.add_target_request import AddTargetRequest
 from ninjapear.models.address import Address
 from ninjapear.models.company_details_response import CompanyDetailsResponse
+from ninjapear.models.company_funding_response import CompanyFundingResponse
+from ninjapear.models.company_update import CompanyUpdate
+from ninjapear.models.company_updates_response import CompanyUpdatesResponse
 from ninjapear.models.create_feed_request import CreateFeedRequest
 from ninjapear.models.create_feed_request_targets_inner import CreateFeedRequestTargetsInner
 from ninjapear.models.credit_balance_response import CreditBalanceResponse
 from ninjapear.models.customer_company import CustomerCompany
 from ninjapear.models.customer_listing_response import CustomerListingResponse
 from ninjapear.models.disposable_email_response import DisposableEmailResponse
+from ninjapear.models.education import Education
 from ninjapear.models.employee_count_response import EmployeeCountResponse
 from ninjapear.models.error import Error
 from ninjapear.models.executive import Executive
 from ninjapear.models.feed import Feed
 from ninjapear.models.feed_list_response import FeedListResponse
 from ninjapear.models.feed_summary import FeedSummary
+from ninjapear.models.funding_round import FundingRound
+from ninjapear.models.investor import Investor
 from ninjapear.models.message_response import MessageResponse
+from ninjapear.models.person_profile_response import PersonProfileResponse
 from ninjapear.models.public_listing import PublicListing
 from ninjapear.models.target import Target
 from ninjapear.models.target_settings import TargetSettings
 from ninjapear.models.update_feed_request import UpdateFeedRequest
 from ninjapear.models.update_target_request import UpdateTargetRequest
+from ninjapear.models.work_experience import WorkExperience
 
