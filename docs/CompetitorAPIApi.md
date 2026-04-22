@@ -1,20 +1,20 @@
-# ninjapear.CustomerAPIApi
+# ninjapear.CompetitorAPIApi
 
 All URIs are relative to *https://nubela.co*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_customer_listing**](CustomerAPIApi.md#get_customer_listing) | **GET** /api/v1/customer/listing | Customer Listing
+[**get_competitor_listing**](CompetitorAPIApi.md#get_competitor_listing) | **GET** /api/v1/competitor/listing | Competitor Listing
 
 
-# **get_customer_listing**
-> CustomerListingResponse get_customer_listing(website, cursor=cursor, page_size=page_size, quality_filter=quality_filter)
+# **get_competitor_listing**
+> CompetitorListingResponse get_competitor_listing(website)
 
-Customer Listing
+Competitor Listing
 
-Get a list of highly-probable customers, investors, and partners/platforms of a target company, categorized by relationship type.
+Discover direct business competitors of a target company. Competitors are identified via organic keyword overlap and AI-powered product comparison.
 
-**Cost:** 1 credit/request + 2 credits/company returned. Credits are charged even when the request returns an empty result.
+**Cost:** 2 credits/competitor returned. Minimum 5 credits per request.
 
 ### Example
 
@@ -22,7 +22,7 @@ Get a list of highly-probable customers, investors, and partners/platforms of a 
 
 ```python
 import ninjapear
-from ninjapear.models.customer_listing_response import CustomerListingResponse
+from ninjapear.models.competitor_listing_response import CompetitorListingResponse
 from ninjapear.rest import ApiException
 from pprint import pprint
 
@@ -45,19 +45,16 @@ configuration = ninjapear.Configuration(
 # Enter a context with an instance of the API client
 with ninjapear.ApiClient(configuration) as api_client:
     # Create an instance of the API class
-    api_instance = ninjapear.CustomerAPIApi(api_client)
+    api_instance = ninjapear.CompetitorAPIApi(api_client)
     website = 'https://www.stripe.com' # str | The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.
-    cursor = 'cursor_example' # str | Pagination cursor from `next_page` in a previous response (optional)
-    page_size = 200 # int | Number of results per page (1-200, default 200) (optional) (default to 200)
-    quality_filter = True # bool | Filter out low-quality results (junk TLDs and unreachable websites) (optional) (default to True)
 
     try:
-        # Customer Listing
-        api_response = api_instance.get_customer_listing(website, cursor=cursor, page_size=page_size, quality_filter=quality_filter)
-        print("The response of CustomerAPIApi->get_customer_listing:\n")
+        # Competitor Listing
+        api_response = api_instance.get_competitor_listing(website)
+        print("The response of CompetitorAPIApi->get_competitor_listing:\n")
         pprint(api_response)
     except Exception as e:
-        print("Exception when calling CustomerAPIApi->get_customer_listing: %s\n" % e)
+        print("Exception when calling CompetitorAPIApi->get_competitor_listing: %s\n" % e)
 ```
 
 
@@ -68,13 +65,10 @@ with ninjapear.ApiClient(configuration) as api_client:
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **website** | **str**| The website URL or company name of the target company. A website URL (e.g. &#x60;https://www.stripe.com&#x60;) is strongly recommended for precision. | 
- **cursor** | **str**| Pagination cursor from &#x60;next_page&#x60; in a previous response | [optional] 
- **page_size** | **int**| Number of results per page (1-200, default 200) | [optional] [default to 200]
- **quality_filter** | **bool**| Filter out low-quality results (junk TLDs and unreachable websites) | [optional] [default to True]
 
 ### Return type
 
-[**CustomerListingResponse**](CustomerListingResponse.md)
+[**CompetitorListingResponse**](CompetitorListingResponse.md)
 
 ### Authorization
 
@@ -89,7 +83,7 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | Successful response with customer listing |  * X-NinjaPear-Credit-Cost - Total cost of credits for this API call <br>  |
+**200** | Successful response with competitor listing |  * X-NinjaPear-Credit-Cost - Total cost of credits for this API call <br>  |
 **400** | Invalid parameters provided |  -  |
 **401** | Invalid API Key |  -  |
 **403** | Insufficient credits |  -  |

@@ -3,7 +3,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles. 9. Discover competitors of any company (by keyword overlap and product overlap).
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -17,10 +17,11 @@ from pydantic import validate_call, Field, StrictFloat, StrictStr, StrictInt
 from typing import Any, Dict, List, Optional, Tuple, Union
 from typing_extensions import Annotated
 
-from pydantic import Field, StrictStr
+from pydantic import Field, StrictBool, StrictStr
 from typing import Optional
 from typing_extensions import Annotated
 from ninjapear.models.person_profile_response import PersonProfileResponse
+from ninjapear.models.work_email_response import WorkEmailResponse
 
 from ninjapear.api_client import ApiClient, RequestSerialized
 from ninjapear.api_response import ApiResponse
@@ -47,7 +48,7 @@ class EmployeeAPIApi:
         first_name: Annotated[Optional[StrictStr], Field(description="Person's first name")] = None,
         middle_name: Annotated[Optional[StrictStr], Field(description="Person's middle name")] = None,
         last_name: Annotated[Optional[StrictStr], Field(description="Person's last name")] = None,
-        employer_website: Annotated[Optional[StrictStr], Field(description="Employer's website URL")] = None,
+        employer_website: Annotated[Optional[StrictStr], Field(description="Employer's website URL or company name. A website URL (e.g. `https://stripe.com`) is strongly recommended for precision.")] = None,
         role: Annotated[Optional[StrictStr], Field(description="Job role/title")] = None,
         slug: Annotated[Optional[StrictStr], Field(description="Person's unique slug identifier (direct lookup)")] = None,
         id: Annotated[Optional[StrictStr], Field(description="Person's unique ID (direct lookup)")] = None,
@@ -76,7 +77,7 @@ class EmployeeAPIApi:
         :type middle_name: str
         :param last_name: Person's last name
         :type last_name: str
-        :param employer_website: Employer's website URL
+        :param employer_website: Employer's website URL or company name. A website URL (e.g. `https://stripe.com`) is strongly recommended for precision.
         :type employer_website: str
         :param role: Job role/title
         :type role: str
@@ -147,7 +148,7 @@ class EmployeeAPIApi:
         first_name: Annotated[Optional[StrictStr], Field(description="Person's first name")] = None,
         middle_name: Annotated[Optional[StrictStr], Field(description="Person's middle name")] = None,
         last_name: Annotated[Optional[StrictStr], Field(description="Person's last name")] = None,
-        employer_website: Annotated[Optional[StrictStr], Field(description="Employer's website URL")] = None,
+        employer_website: Annotated[Optional[StrictStr], Field(description="Employer's website URL or company name. A website URL (e.g. `https://stripe.com`) is strongly recommended for precision.")] = None,
         role: Annotated[Optional[StrictStr], Field(description="Job role/title")] = None,
         slug: Annotated[Optional[StrictStr], Field(description="Person's unique slug identifier (direct lookup)")] = None,
         id: Annotated[Optional[StrictStr], Field(description="Person's unique ID (direct lookup)")] = None,
@@ -176,7 +177,7 @@ class EmployeeAPIApi:
         :type middle_name: str
         :param last_name: Person's last name
         :type last_name: str
-        :param employer_website: Employer's website URL
+        :param employer_website: Employer's website URL or company name. A website URL (e.g. `https://stripe.com`) is strongly recommended for precision.
         :type employer_website: str
         :param role: Job role/title
         :type role: str
@@ -247,7 +248,7 @@ class EmployeeAPIApi:
         first_name: Annotated[Optional[StrictStr], Field(description="Person's first name")] = None,
         middle_name: Annotated[Optional[StrictStr], Field(description="Person's middle name")] = None,
         last_name: Annotated[Optional[StrictStr], Field(description="Person's last name")] = None,
-        employer_website: Annotated[Optional[StrictStr], Field(description="Employer's website URL")] = None,
+        employer_website: Annotated[Optional[StrictStr], Field(description="Employer's website URL or company name. A website URL (e.g. `https://stripe.com`) is strongly recommended for precision.")] = None,
         role: Annotated[Optional[StrictStr], Field(description="Job role/title")] = None,
         slug: Annotated[Optional[StrictStr], Field(description="Person's unique slug identifier (direct lookup)")] = None,
         id: Annotated[Optional[StrictStr], Field(description="Person's unique ID (direct lookup)")] = None,
@@ -276,7 +277,7 @@ class EmployeeAPIApi:
         :type middle_name: str
         :param last_name: Person's last name
         :type last_name: str
-        :param employer_website: Employer's website URL
+        :param employer_website: Employer's website URL or company name. A website URL (e.g. `https://stripe.com`) is strongly recommended for precision.
         :type employer_website: str
         :param role: Job role/title
         :type role: str
@@ -422,6 +423,335 @@ class EmployeeAPIApi:
         return self.api_client.param_serialize(
             method='GET',
             resource_path='/api/v1/employee/profile',
+            path_params=_path_params,
+            query_params=_query_params,
+            header_params=_header_params,
+            body=_body_params,
+            post_params=_form_params,
+            files=_files,
+            auth_settings=_auth_settings,
+            collection_formats=_collection_formats,
+            _host=_host,
+            _request_auth=_request_auth
+        )
+
+
+
+
+    @validate_call
+    def get_work_email(
+        self,
+        first_name: Annotated[StrictStr, Field(description="Person's first name")],
+        domain: Annotated[StrictStr, Field(description="Company domain. Scheme, www, and trailing slash are stripped if present.")],
+        last_name: Annotated[Optional[StrictStr], Field(description="Person's last name. Improves accuracy when the email pattern needs it.")] = None,
+        force_refresh: Annotated[Optional[StrictBool], Field(description="If `true`, bypass the cache and re-run the AI lookup.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> WorkEmailResponse:
+        """Work Email Lookup
+
+        Makes a best-effort attempt to return a person's public work email address given their first name (optional last name) and a company domain. Searches public sources for the specific email first; if none is found, infers the address from observed employee email patterns at the domain. Returns `work_email: null` if no evidence is available.  **Cost:** 2 credits per API call, charged regardless of whether an email is returned.
+
+        :param first_name: Person's first name (required)
+        :type first_name: str
+        :param domain: Company domain. Scheme, www, and trailing slash are stripped if present. (required)
+        :type domain: str
+        :param last_name: Person's last name. Improves accuracy when the email pattern needs it.
+        :type last_name: str
+        :param force_refresh: If `true`, bypass the cache and re-run the AI lookup.
+        :type force_refresh: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_work_email_serialize(
+            first_name=first_name,
+            domain=domain,
+            last_name=last_name,
+            force_refresh=force_refresh,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkEmailResponse",
+            '503': "Error",
+            '400': "Error",
+            '401': "Error",
+            '403': "Error",
+            '429': "Error",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        ).data
+
+
+    @validate_call
+    def get_work_email_with_http_info(
+        self,
+        first_name: Annotated[StrictStr, Field(description="Person's first name")],
+        domain: Annotated[StrictStr, Field(description="Company domain. Scheme, www, and trailing slash are stripped if present.")],
+        last_name: Annotated[Optional[StrictStr], Field(description="Person's last name. Improves accuracy when the email pattern needs it.")] = None,
+        force_refresh: Annotated[Optional[StrictBool], Field(description="If `true`, bypass the cache and re-run the AI lookup.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> ApiResponse[WorkEmailResponse]:
+        """Work Email Lookup
+
+        Makes a best-effort attempt to return a person's public work email address given their first name (optional last name) and a company domain. Searches public sources for the specific email first; if none is found, infers the address from observed employee email patterns at the domain. Returns `work_email: null` if no evidence is available.  **Cost:** 2 credits per API call, charged regardless of whether an email is returned.
+
+        :param first_name: Person's first name (required)
+        :type first_name: str
+        :param domain: Company domain. Scheme, www, and trailing slash are stripped if present. (required)
+        :type domain: str
+        :param last_name: Person's last name. Improves accuracy when the email pattern needs it.
+        :type last_name: str
+        :param force_refresh: If `true`, bypass the cache and re-run the AI lookup.
+        :type force_refresh: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_work_email_serialize(
+            first_name=first_name,
+            domain=domain,
+            last_name=last_name,
+            force_refresh=force_refresh,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkEmailResponse",
+            '503': "Error",
+            '400': "Error",
+            '401': "Error",
+            '403': "Error",
+            '429': "Error",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        response_data.read()
+        return self.api_client.response_deserialize(
+            response_data=response_data,
+            response_types_map=_response_types_map,
+        )
+
+
+    @validate_call
+    def get_work_email_without_preload_content(
+        self,
+        first_name: Annotated[StrictStr, Field(description="Person's first name")],
+        domain: Annotated[StrictStr, Field(description="Company domain. Scheme, www, and trailing slash are stripped if present.")],
+        last_name: Annotated[Optional[StrictStr], Field(description="Person's last name. Improves accuracy when the email pattern needs it.")] = None,
+        force_refresh: Annotated[Optional[StrictBool], Field(description="If `true`, bypass the cache and re-run the AI lookup.")] = None,
+        _request_timeout: Union[
+            None,
+            Annotated[StrictFloat, Field(gt=0)],
+            Tuple[
+                Annotated[StrictFloat, Field(gt=0)],
+                Annotated[StrictFloat, Field(gt=0)]
+            ]
+        ] = None,
+        _request_auth: Optional[Dict[StrictStr, Any]] = None,
+        _content_type: Optional[StrictStr] = None,
+        _headers: Optional[Dict[StrictStr, Any]] = None,
+        _host_index: Annotated[StrictInt, Field(ge=0, le=0)] = 0,
+    ) -> RESTResponseType:
+        """Work Email Lookup
+
+        Makes a best-effort attempt to return a person's public work email address given their first name (optional last name) and a company domain. Searches public sources for the specific email first; if none is found, infers the address from observed employee email patterns at the domain. Returns `work_email: null` if no evidence is available.  **Cost:** 2 credits per API call, charged regardless of whether an email is returned.
+
+        :param first_name: Person's first name (required)
+        :type first_name: str
+        :param domain: Company domain. Scheme, www, and trailing slash are stripped if present. (required)
+        :type domain: str
+        :param last_name: Person's last name. Improves accuracy when the email pattern needs it.
+        :type last_name: str
+        :param force_refresh: If `true`, bypass the cache and re-run the AI lookup.
+        :type force_refresh: bool
+        :param _request_timeout: timeout setting for this request. If one
+                                 number provided, it will be total request
+                                 timeout. It can also be a pair (tuple) of
+                                 (connection, read) timeouts.
+        :type _request_timeout: int, tuple(int, int), optional
+        :param _request_auth: set to override the auth_settings for an a single
+                              request; this effectively ignores the
+                              authentication in the spec for a single request.
+        :type _request_auth: dict, optional
+        :param _content_type: force content-type for the request.
+        :type _content_type: str, Optional
+        :param _headers: set to override the headers for a single
+                         request; this effectively ignores the headers
+                         in the spec for a single request.
+        :type _headers: dict, optional
+        :param _host_index: set to override the host_index for a single
+                            request; this effectively ignores the host_index
+                            in the spec for a single request.
+        :type _host_index: int, optional
+        :return: Returns the result object.
+        """ # noqa: E501
+
+        _param = self._get_work_email_serialize(
+            first_name=first_name,
+            domain=domain,
+            last_name=last_name,
+            force_refresh=force_refresh,
+            _request_auth=_request_auth,
+            _content_type=_content_type,
+            _headers=_headers,
+            _host_index=_host_index
+        )
+
+        _response_types_map: Dict[str, Optional[str]] = {
+            '200': "WorkEmailResponse",
+            '503': "Error",
+            '400': "Error",
+            '401': "Error",
+            '403': "Error",
+            '429': "Error",
+        }
+        response_data = self.api_client.call_api(
+            *_param,
+            _request_timeout=_request_timeout
+        )
+        return response_data.response
+
+
+    def _get_work_email_serialize(
+        self,
+        first_name,
+        domain,
+        last_name,
+        force_refresh,
+        _request_auth,
+        _content_type,
+        _headers,
+        _host_index,
+    ) -> RequestSerialized:
+
+        _host = None
+
+        _collection_formats: Dict[str, str] = {
+        }
+
+        _path_params: Dict[str, str] = {}
+        _query_params: List[Tuple[str, str]] = []
+        _header_params: Dict[str, Optional[str]] = _headers or {}
+        _form_params: List[Tuple[str, str]] = []
+        _files: Dict[
+            str, Union[str, bytes, List[str], List[bytes], List[Tuple[str, bytes]]]
+        ] = {}
+        _body_params: Optional[bytes] = None
+
+        # process the path parameters
+        # process the query parameters
+        if first_name is not None:
+            
+            _query_params.append(('first_name', first_name))
+            
+        if last_name is not None:
+            
+            _query_params.append(('last_name', last_name))
+            
+        if domain is not None:
+            
+            _query_params.append(('domain', domain))
+            
+        if force_refresh is not None:
+            
+            _query_params.append(('_force_refresh', force_refresh))
+            
+        # process the header parameters
+        # process the form parameters
+        # process the body parameter
+
+
+        # set the HTTP header `Accept`
+        if 'Accept' not in _header_params:
+            _header_params['Accept'] = self.api_client.select_header_accept(
+                [
+                    'application/json'
+                ]
+            )
+
+
+        # authentication setting
+        _auth_settings: List[str] = [
+            'bearerAuth'
+        ]
+
+        return self.api_client.param_serialize(
+            method='GET',
+            resource_path='/api/v1/employee/work-email',
             path_params=_path_params,
             query_params=_query_params,
             header_params=_header_params,

@@ -3,7 +3,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles. 9. Discover competitors of any company (by keyword overlap and product overlap).
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -18,7 +18,7 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
 from typing import Any, ClassVar, Dict, List, Optional
 from ninjapear.models.funding_round import FundingRound
 from typing import Optional, Set
@@ -28,9 +28,23 @@ class CompanyFundingResponse(BaseModel):
     """
     CompanyFundingResponse
     """ # noqa: E501
+    website: Optional[StrictStr] = Field(default=None, description="The company domain the response describes, echoed from the request.")
     total_funds_raised_usd: Optional[StrictInt] = Field(default=None, description="Total funds raised across all rounds in USD")
-    funding_rounds: Optional[List[FundingRound]] = Field(default=None, description="List of funding rounds")
-    __properties: ClassVar[List[str]] = ["total_funds_raised_usd", "funding_rounds"]
+    funding_rounds: Optional[List[FundingRound]] = Field(default=None, description="List of funding rounds. Empty array on fresh-path failures (see `error_code`).")
+    credit_cost: Optional[StrictInt] = Field(default=None, description="Total credits charged for this call (2 base + 1 per unique investor). Delivered in the response body rather than the `X-NinjaPear-Credit-Cost` header on cache misses, because streaming responses cannot set HTTP trailers.")
+    error: Optional[StrictStr] = Field(default=None, description="Error message when funding data could not be extracted. Only present alongside `error_code`.")
+    error_code: Optional[StrictStr] = Field(default=None, description="Present only on fresh-path failures (HTTP 200, streaming). Clients that previously branched on `status_code == 404` should branch on this field. `no_funding_data` still charges the 2-credit base; `service_temp_unavailable` is not charged.")
+    __properties: ClassVar[List[str]] = ["website", "total_funds_raised_usd", "funding_rounds", "credit_cost", "error", "error_code"]
+
+    @field_validator('error_code')
+    def error_code_validate_enum(cls, value):
+        """Validates the enum"""
+        if value is None:
+            return value
+
+        if value not in set(['no_funding_data', 'service_temp_unavailable']):
+            raise ValueError("must be one of enum values ('no_funding_data', 'service_temp_unavailable')")
+        return value
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -83,6 +97,16 @@ class CompanyFundingResponse(BaseModel):
         if self.total_funds_raised_usd is None and "total_funds_raised_usd" in self.model_fields_set:
             _dict['total_funds_raised_usd'] = None
 
+        # set to None if error (nullable) is None
+        # and model_fields_set contains the field
+        if self.error is None and "error" in self.model_fields_set:
+            _dict['error'] = None
+
+        # set to None if error_code (nullable) is None
+        # and model_fields_set contains the field
+        if self.error_code is None and "error_code" in self.model_fields_set:
+            _dict['error_code'] = None
+
         return _dict
 
     @classmethod
@@ -95,8 +119,12 @@ class CompanyFundingResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
+            "website": obj.get("website"),
             "total_funds_raised_usd": obj.get("total_funds_raised_usd"),
-            "funding_rounds": [FundingRound.from_dict(_item) for _item in obj["funding_rounds"]] if obj.get("funding_rounds") is not None else None
+            "funding_rounds": [FundingRound.from_dict(_item) for _item in obj["funding_rounds"]] if obj.get("funding_rounds") is not None else None,
+            "credit_cost": obj.get("credit_cost"),
+            "error": obj.get("error"),
+            "error_code": obj.get("error_code")
         })
         return _obj
 

@@ -50,7 +50,7 @@ configuration = ninjapear.Configuration(
 with ninjapear.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = ninjapear.CompanyAPIApi(api_client)
-    website = 'https://www.stripe.com' # str | The website URL of the target company
+    website = 'https://www.stripe.com' # str | The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.
     include_employee_count = False # bool | Fetch fresh employee count data via web search. Adds 2 credits. (optional) (default to False)
     follower_count = 'follower_count_example' # str | Set to 'include' to fetch Twitter/X follower and following counts. Adds 1 credit. (optional)
 
@@ -70,7 +70,7 @@ with ninjapear.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **website** | **str**| The website URL of the target company | 
+ **website** | **str**| The website URL or company name of the target company. A website URL (e.g. &#x60;https://www.stripe.com&#x60;) is strongly recommended for precision. | 
  **include_employee_count** | **bool**| Fetch fresh employee count data via web search. Adds 2 credits. | [optional] [default to False]
  **follower_count** | **str**| Set to &#39;include&#39; to fetch Twitter/X follower and following counts. Adds 1 credit. | [optional] 
 
@@ -107,6 +107,8 @@ Company Funding
 
 Retrieve the funding history of a company including all funding rounds and investors.
 
+On cache miss this endpoint streams a single JSON object with whitespace heartbeats while Google AI Mode and LLM extraction run; set your HTTP client read timeout to at least 180 seconds. Cache hits return immediately. Fresh-path failures are delivered as HTTP 200 with `error` and `error_code` fields in the response body (see `CompanyFundingResponse`) because streaming responses cannot set late status codes.
+
 **Cost:** 2 credits + 1 credit per unique investor returned
 
 ### Example
@@ -139,7 +141,7 @@ configuration = ninjapear.Configuration(
 with ninjapear.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = ninjapear.CompanyAPIApi(api_client)
-    website = 'https://www.stripe.com' # str | The website URL of the target company
+    website = 'https://www.stripe.com' # str | The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.
 
     try:
         # Company Funding
@@ -157,7 +159,7 @@ with ninjapear.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **website** | **str**| The website URL of the target company | 
+ **website** | **str**| The website URL or company name of the target company. A website URL (e.g. &#x60;https://www.stripe.com&#x60;) is strongly recommended for precision. | 
 
 ### Return type
 
@@ -176,8 +178,7 @@ Name | Type | Description  | Notes
 
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
-**200** | Company funding data |  * X-NinjaPear-Credit-Cost - Total cost of credits for this API call <br>  |
-**404** | No funding data found for the given website |  -  |
+**200** | Company funding data. On cache hit this is a standard JSON response; on cache miss the body is streamed as a single JSON object with whitespace heartbeats and may carry &#x60;error&#x60;/&#x60;error_code&#x60; fields instead of &#x60;funding_rounds&#x60;. |  * X-NinjaPear-Credit-Cost - Total cost of credits for this API call. Present on cache hits only — on streaming cache-miss responses the credit cost is delivered in the response body as &#x60;credit_cost&#x60; because streaming responses cannot set HTTP trailers. <br>  |
 **400** | Invalid parameters provided |  -  |
 **401** | Invalid API Key |  -  |
 **403** | Insufficient credits |  -  |
@@ -307,7 +308,7 @@ configuration = ninjapear.Configuration(
 with ninjapear.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = ninjapear.CompanyAPIApi(api_client)
-    website = 'https://www.stripe.com' # str | The website URL of the target company
+    website = 'https://www.stripe.com' # str | The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.
 
     try:
         # Company Updates
@@ -325,7 +326,7 @@ with ninjapear.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **website** | **str**| The website URL of the target company | 
+ **website** | **str**| The website URL or company name of the target company. A website URL (e.g. &#x60;https://www.stripe.com&#x60;) is strongly recommended for precision. | 
 
 ### Return type
 
@@ -391,7 +392,7 @@ configuration = ninjapear.Configuration(
 with ninjapear.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = ninjapear.CompanyAPIApi(api_client)
-    website = 'https://www.stripe.com' # str | The website URL of the target company
+    website = 'https://www.stripe.com' # str | The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.
 
     try:
         # Employee Count
@@ -409,7 +410,7 @@ with ninjapear.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **website** | **str**| The website URL of the target company | 
+ **website** | **str**| The website URL or company name of the target company. A website URL (e.g. &#x60;https://www.stripe.com&#x60;) is strongly recommended for precision. | 
 
 ### Return type
 

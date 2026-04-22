@@ -3,7 +3,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles. 9. Discover competitors of any company (by keyword overlap and product overlap).
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -46,7 +46,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_details(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         include_employee_count: Annotated[Optional[StrictBool], Field(description="Fetch fresh employee count data via web search. Adds 2 credits.")] = None,
         follower_count: Annotated[Optional[StrictStr], Field(description="Set to 'include' to fetch Twitter/X follower and following counts. Adds 1 credit.")] = None,
         _request_timeout: Union[
@@ -66,7 +66,7 @@ class CompanyAPIApi:
 
         Retrieve detailed company information including description, industry, executives, addresses, and for public companies: financials and stock info.  **Cost:** 2 credits (4 credits if include_employee_count=true, +1 credit if follower_count=include)
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param include_employee_count: Fetch fresh employee count data via web search. Adds 2 credits.
         :type include_employee_count: bool
@@ -126,7 +126,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_details_with_http_info(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         include_employee_count: Annotated[Optional[StrictBool], Field(description="Fetch fresh employee count data via web search. Adds 2 credits.")] = None,
         follower_count: Annotated[Optional[StrictStr], Field(description="Set to 'include' to fetch Twitter/X follower and following counts. Adds 1 credit.")] = None,
         _request_timeout: Union[
@@ -146,7 +146,7 @@ class CompanyAPIApi:
 
         Retrieve detailed company information including description, industry, executives, addresses, and for public companies: financials and stock info.  **Cost:** 2 credits (4 credits if include_employee_count=true, +1 credit if follower_count=include)
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param include_employee_count: Fetch fresh employee count data via web search. Adds 2 credits.
         :type include_employee_count: bool
@@ -206,7 +206,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_details_without_preload_content(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         include_employee_count: Annotated[Optional[StrictBool], Field(description="Fetch fresh employee count data via web search. Adds 2 credits.")] = None,
         follower_count: Annotated[Optional[StrictStr], Field(description="Set to 'include' to fetch Twitter/X follower and following counts. Adds 1 credit.")] = None,
         _request_timeout: Union[
@@ -226,7 +226,7 @@ class CompanyAPIApi:
 
         Retrieve detailed company information including description, industry, executives, addresses, and for public companies: financials and stock info.  **Cost:** 2 credits (4 credits if include_employee_count=true, +1 credit if follower_count=include)
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param include_employee_count: Fetch fresh employee count data via web search. Adds 2 credits.
         :type include_employee_count: bool
@@ -358,7 +358,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_funding(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -374,9 +374,9 @@ class CompanyAPIApi:
     ) -> CompanyFundingResponse:
         """Company Funding
 
-        Retrieve the funding history of a company including all funding rounds and investors.  **Cost:** 2 credits + 1 credit per unique investor returned
+        Retrieve the funding history of a company including all funding rounds and investors.  On cache miss this endpoint streams a single JSON object with whitespace heartbeats while Google AI Mode and LLM extraction run; set your HTTP client read timeout to at least 180 seconds. Cache hits return immediately. Fresh-path failures are delivered as HTTP 200 with `error` and `error_code` fields in the response body (see `CompanyFundingResponse`) because streaming responses cannot set late status codes.  **Cost:** 2 credits + 1 credit per unique investor returned
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -410,7 +410,6 @@ class CompanyAPIApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CompanyFundingResponse",
-            '404': "Error",
             '400': "Error",
             '401': "Error",
             '403': "Error",
@@ -430,7 +429,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_funding_with_http_info(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -446,9 +445,9 @@ class CompanyAPIApi:
     ) -> ApiResponse[CompanyFundingResponse]:
         """Company Funding
 
-        Retrieve the funding history of a company including all funding rounds and investors.  **Cost:** 2 credits + 1 credit per unique investor returned
+        Retrieve the funding history of a company including all funding rounds and investors.  On cache miss this endpoint streams a single JSON object with whitespace heartbeats while Google AI Mode and LLM extraction run; set your HTTP client read timeout to at least 180 seconds. Cache hits return immediately. Fresh-path failures are delivered as HTTP 200 with `error` and `error_code` fields in the response body (see `CompanyFundingResponse`) because streaming responses cannot set late status codes.  **Cost:** 2 credits + 1 credit per unique investor returned
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -482,7 +481,6 @@ class CompanyAPIApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CompanyFundingResponse",
-            '404': "Error",
             '400': "Error",
             '401': "Error",
             '403': "Error",
@@ -502,7 +500,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_funding_without_preload_content(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -518,9 +516,9 @@ class CompanyAPIApi:
     ) -> RESTResponseType:
         """Company Funding
 
-        Retrieve the funding history of a company including all funding rounds and investors.  **Cost:** 2 credits + 1 credit per unique investor returned
+        Retrieve the funding history of a company including all funding rounds and investors.  On cache miss this endpoint streams a single JSON object with whitespace heartbeats while Google AI Mode and LLM extraction run; set your HTTP client read timeout to at least 180 seconds. Cache hits return immediately. Fresh-path failures are delivered as HTTP 200 with `error` and `error_code` fields in the response body (see `CompanyFundingResponse`) because streaming responses cannot set late status codes.  **Cost:** 2 credits + 1 credit per unique investor returned
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -554,7 +552,6 @@ class CompanyAPIApi:
 
         _response_types_map: Dict[str, Optional[str]] = {
             '200': "CompanyFundingResponse",
-            '404': "Error",
             '400': "Error",
             '401': "Error",
             '403': "Error",
@@ -912,7 +909,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_updates(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -930,7 +927,7 @@ class CompanyAPIApi:
 
         Retrieve recent blog posts and X/Twitter updates for a company.  **Cost:** 2 credits
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -983,7 +980,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_updates_with_http_info(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1001,7 +998,7 @@ class CompanyAPIApi:
 
         Retrieve recent blog posts and X/Twitter updates for a company.  **Cost:** 2 credits
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1054,7 +1051,7 @@ class CompanyAPIApi:
     @validate_call
     def get_company_updates_without_preload_content(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1072,7 +1069,7 @@ class CompanyAPIApi:
 
         Retrieve recent blog posts and X/Twitter updates for a company.  **Cost:** 2 credits
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1187,7 +1184,7 @@ class CompanyAPIApi:
     @validate_call
     def get_employee_count(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1205,7 +1202,7 @@ class CompanyAPIApi:
 
         Get the employee count for a company. Uses web search to find the most recent employee count information.  **Cost:** 2 credits
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1259,7 +1256,7 @@ class CompanyAPIApi:
     @validate_call
     def get_employee_count_with_http_info(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1277,7 +1274,7 @@ class CompanyAPIApi:
 
         Get the employee count for a company. Uses web search to find the most recent employee count information.  **Cost:** 2 credits
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request
@@ -1331,7 +1328,7 @@ class CompanyAPIApi:
     @validate_call
     def get_employee_count_without_preload_content(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         _request_timeout: Union[
             None,
             Annotated[StrictFloat, Field(gt=0)],
@@ -1349,7 +1346,7 @@ class CompanyAPIApi:
 
         Get the employee count for a company. Uses web search to find the most recent employee count information.  **Cost:** 2 credits
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param _request_timeout: timeout setting for this request. If one
                                  number provided, it will be total request

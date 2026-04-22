@@ -10,6 +10,9 @@ docs/CompanyDetailsResponse.md
 docs/CompanyFundingResponse.md
 docs/CompanyUpdate.md
 docs/CompanyUpdatesResponse.md
+docs/CompetitorAPIApi.md
+docs/CompetitorCompany.md
+docs/CompetitorListingResponse.md
 docs/ContactAPIApi.md
 docs/CreateFeedRequest.md
 docs/CreateFeedRequestTargetsInner.md
@@ -37,11 +40,13 @@ docs/Target.md
 docs/TargetSettings.md
 docs/UpdateFeedRequest.md
 docs/UpdateTargetRequest.md
+docs/WorkEmailResponse.md
 docs/WorkExperience.md
 git_push.sh
 ninjapear/__init__.py
 ninjapear/api/__init__.py
 ninjapear/api/company_api_api.py
+ninjapear/api/competitor_api_api.py
 ninjapear/api/contact_api_api.py
 ninjapear/api/customer_api_api.py
 ninjapear/api/employee_api_api.py
@@ -58,6 +63,8 @@ ninjapear/models/company_details_response.py
 ninjapear/models/company_funding_response.py
 ninjapear/models/company_update.py
 ninjapear/models/company_updates_response.py
+ninjapear/models/competitor_company.py
+ninjapear/models/competitor_listing_response.py
 ninjapear/models/create_feed_request.py
 ninjapear/models/create_feed_request_targets_inner.py
 ninjapear/models/credit_balance_response.py
@@ -80,6 +87,7 @@ ninjapear/models/target.py
 ninjapear/models/target_settings.py
 ninjapear/models/update_feed_request.py
 ninjapear/models/update_target_request.py
+ninjapear/models/work_email_response.py
 ninjapear/models/work_experience.py
 ninjapear/py.typed
 ninjapear/rest.py
@@ -89,14 +97,5 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
-test/test_company_funding_response.py
-test/test_company_update.py
-test/test_company_updates_response.py
-test/test_education.py
-test/test_employee_api_api.py
-test/test_funding_round.py
-test/test_investor.py
-test/test_monitor_api_api.py
-test/test_person_profile_response.py
-test/test_work_experience.py
+test/test_work_email_response.py
 tox.ini

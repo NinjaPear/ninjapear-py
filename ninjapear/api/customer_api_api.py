@@ -3,7 +3,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles. 9. Discover competitors of any company (by keyword overlap and product overlap).
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -43,7 +43,7 @@ class CustomerAPIApi:
     @validate_call
     def get_customer_listing(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         cursor: Annotated[Optional[StrictStr], Field(description="Pagination cursor from `next_page` in a previous response")] = None,
         page_size: Annotated[Optional[Annotated[int, Field(le=200, strict=True, ge=1)]], Field(description="Number of results per page (1-200, default 200)")] = None,
         quality_filter: Annotated[Optional[StrictBool], Field(description="Filter out low-quality results (junk TLDs and unreachable websites)")] = None,
@@ -64,7 +64,7 @@ class CustomerAPIApi:
 
         Get a list of highly-probable customers, investors, and partners/platforms of a target company, categorized by relationship type.  **Cost:** 1 credit/request + 2 credits/company returned. Credits are charged even when the request returns an empty result.
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param cursor: Pagination cursor from `next_page` in a previous response
         :type cursor: str
@@ -126,7 +126,7 @@ class CustomerAPIApi:
     @validate_call
     def get_customer_listing_with_http_info(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         cursor: Annotated[Optional[StrictStr], Field(description="Pagination cursor from `next_page` in a previous response")] = None,
         page_size: Annotated[Optional[Annotated[int, Field(le=200, strict=True, ge=1)]], Field(description="Number of results per page (1-200, default 200)")] = None,
         quality_filter: Annotated[Optional[StrictBool], Field(description="Filter out low-quality results (junk TLDs and unreachable websites)")] = None,
@@ -147,7 +147,7 @@ class CustomerAPIApi:
 
         Get a list of highly-probable customers, investors, and partners/platforms of a target company, categorized by relationship type.  **Cost:** 1 credit/request + 2 credits/company returned. Credits are charged even when the request returns an empty result.
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param cursor: Pagination cursor from `next_page` in a previous response
         :type cursor: str
@@ -209,7 +209,7 @@ class CustomerAPIApi:
     @validate_call
     def get_customer_listing_without_preload_content(
         self,
-        website: Annotated[StrictStr, Field(description="The website URL of the target company")],
+        website: Annotated[StrictStr, Field(description="The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision.")],
         cursor: Annotated[Optional[StrictStr], Field(description="Pagination cursor from `next_page` in a previous response")] = None,
         page_size: Annotated[Optional[Annotated[int, Field(le=200, strict=True, ge=1)]], Field(description="Number of results per page (1-200, default 200)")] = None,
         quality_filter: Annotated[Optional[StrictBool], Field(description="Filter out low-quality results (junk TLDs and unreachable websites)")] = None,
@@ -230,7 +230,7 @@ class CustomerAPIApi:
 
         Get a list of highly-probable customers, investors, and partners/platforms of a target company, categorized by relationship type.  **Cost:** 1 credit/request + 2 credits/company returned. Credits are charged even when the request returns an empty result.
 
-        :param website: The website URL of the target company (required)
+        :param website: The website URL or company name of the target company. A website URL (e.g. `https://www.stripe.com`) is strongly recommended for precision. (required)
         :type website: str
         :param cursor: Pagination cursor from `next_page` in a previous response
         :type cursor: str

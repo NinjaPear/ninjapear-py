@@ -5,7 +5,7 @@
 """
     NinjaPear API
 
-    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles.
+    NinjaPear is a data platform that seeks to serve as the single source of truth for B2B data, be it to power your data-driven applications or your sales-driven workflow.  As a data client of NinjaPear API, you can: 1. Look up the customers, investors, and partners/platforms of any business globally. 2. (FREE) Retrieve the logo of any company. 3. (FREE) Find out the nature of an email address. 4. (FREE) Check your credit balance. 5. Monitor companies for updates (blog posts, X/Twitter posts, website changes) via RSS feeds. 6. Look up detailed company information (description, industry, executives, financials). 7. Get company funding history and investors. 8. Enrich person/employee professional profiles. 9. Discover competitors of any company (by keyword overlap and product overlap).
 
     The version of the OpenAPI document: 1.0.0
     Contact: hello@nubela.co
@@ -15,11 +15,12 @@
 """  # noqa: E501
 
 
-__version__ = "1.3.0"
+__version__ = "1.0.0"
 
 # Define package exports
 __all__ = [
     "CompanyAPIApi",
+    "CompetitorAPIApi",
     "ContactAPIApi",
     "CustomerAPIApi",
     "EmployeeAPIApi",
@@ -40,6 +41,8 @@ __all__ = [
     "CompanyFundingResponse",
     "CompanyUpdate",
     "CompanyUpdatesResponse",
+    "CompetitorCompany",
+    "CompetitorListingResponse",
     "CreateFeedRequest",
     "CreateFeedRequestTargetsInner",
     "CreditBalanceResponse",
@@ -62,11 +65,13 @@ __all__ = [
     "TargetSettings",
     "UpdateFeedRequest",
     "UpdateTargetRequest",
+    "WorkEmailResponse",
     "WorkExperience",
 ]
 
 # import apis into sdk package
 from ninjapear.api.company_api_api import CompanyAPIApi as CompanyAPIApi
+from ninjapear.api.competitor_api_api import CompetitorAPIApi as CompetitorAPIApi
 from ninjapear.api.contact_api_api import ContactAPIApi as ContactAPIApi
 from ninjapear.api.customer_api_api import CustomerAPIApi as CustomerAPIApi
 from ninjapear.api.employee_api_api import EmployeeAPIApi as EmployeeAPIApi
@@ -91,6 +96,8 @@ from ninjapear.models.company_details_response import CompanyDetailsResponse as 
 from ninjapear.models.company_funding_response import CompanyFundingResponse as CompanyFundingResponse
 from ninjapear.models.company_update import CompanyUpdate as CompanyUpdate
 from ninjapear.models.company_updates_response import CompanyUpdatesResponse as CompanyUpdatesResponse
+from ninjapear.models.competitor_company import CompetitorCompany as CompetitorCompany
+from ninjapear.models.competitor_listing_response import CompetitorListingResponse as CompetitorListingResponse
 from ninjapear.models.create_feed_request import CreateFeedRequest as CreateFeedRequest
 from ninjapear.models.create_feed_request_targets_inner import CreateFeedRequestTargetsInner as CreateFeedRequestTargetsInner
 from ninjapear.models.credit_balance_response import CreditBalanceResponse as CreditBalanceResponse
@@ -113,5 +120,6 @@ from ninjapear.models.target import Target as Target
 from ninjapear.models.target_settings import TargetSettings as TargetSettings
 from ninjapear.models.update_feed_request import UpdateFeedRequest as UpdateFeedRequest
 from ninjapear.models.update_target_request import UpdateTargetRequest as UpdateTargetRequest
+from ninjapear.models.work_email_response import WorkEmailResponse as WorkEmailResponse
 from ninjapear.models.work_experience import WorkExperience as WorkExperience
 

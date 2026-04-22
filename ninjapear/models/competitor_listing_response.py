@@ -18,30 +18,18 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, ClassVar, Dict, List, Optional
+from ninjapear.models.competitor_company import CompetitorCompany
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Investor(BaseModel):
+class CompetitorListingResponse(BaseModel):
     """
-    Investor
+    CompetitorListingResponse
     """ # noqa: E501
-    name: Optional[StrictStr] = Field(default=None, description="Investor name")
-    website: Optional[StrictStr] = Field(default=None, description="Investor website URL")
-    type: Optional[StrictStr] = Field(default=None, description="Type of investor")
-    amount_usd: Optional[StrictInt] = Field(default=None, description="Amount invested in USD (if known)")
-    __properties: ClassVar[List[str]] = ["name", "website", "type", "amount_usd"]
-
-    @field_validator('type')
-    def type_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['company', 'angel']):
-            raise ValueError("must be one of enum values ('company', 'angel')")
-        return value
+    competitors: Optional[List[CompetitorCompany]] = Field(default=None, description="List of competitors for the target company")
+    __properties: ClassVar[List[str]] = ["competitors"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -61,7 +49,7 @@ class Investor(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Investor from a JSON string"""
+        """Create an instance of CompetitorListingResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -82,31 +70,18 @@ class Investor(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if name (nullable) is None
-        # and model_fields_set contains the field
-        if self.name is None and "name" in self.model_fields_set:
-            _dict['name'] = None
-
-        # set to None if website (nullable) is None
-        # and model_fields_set contains the field
-        if self.website is None and "website" in self.model_fields_set:
-            _dict['website'] = None
-
-        # set to None if type (nullable) is None
-        # and model_fields_set contains the field
-        if self.type is None and "type" in self.model_fields_set:
-            _dict['type'] = None
-
-        # set to None if amount_usd (nullable) is None
-        # and model_fields_set contains the field
-        if self.amount_usd is None and "amount_usd" in self.model_fields_set:
-            _dict['amount_usd'] = None
-
+        # override the default output from pydantic by calling `to_dict()` of each item in competitors (list)
+        _items = []
+        if self.competitors:
+            for _item_competitors in self.competitors:
+                if _item_competitors:
+                    _items.append(_item_competitors.to_dict())
+            _dict['competitors'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Investor from a dict"""
+        """Create an instance of CompetitorListingResponse from a dict"""
         if obj is None:
             return None
 
@@ -114,10 +89,7 @@ class Investor(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "website": obj.get("website"),
-            "type": obj.get("type"),
-            "amount_usd": obj.get("amount_usd")
+            "competitors": [CompetitorCompany.from_dict(_item) for _item in obj["competitors"]] if obj.get("competitors") is not None else None
         })
         return _obj
 
