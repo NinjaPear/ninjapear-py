@@ -111,6 +111,7 @@ Class | Method | HTTP request | Description
 *CompanyAPIApi* | [**get_company_funding**](docs/CompanyAPIApi.md#get_company_funding) | **GET** /api/v1/company/funding | Company Funding
 *CompanyAPIApi* | [**get_company_logo**](docs/CompanyAPIApi.md#get_company_logo) | **GET** /api/v1/company/logo | Company Logo
 *CompanyAPIApi* | [**get_company_updates**](docs/CompanyAPIApi.md#get_company_updates) | **GET** /api/v1/company/updates | Company Updates
+*CompanyAPIApi* | [**get_company_website**](docs/CompanyAPIApi.md#get_company_website) | **GET** /api/v1/company/website | Website Lookup
 *CompanyAPIApi* | [**get_employee_count**](docs/CompanyAPIApi.md#get_employee_count) | **GET** /api/v1/company/employee-count | Employee Count
 *CompetitorAPIApi* | [**get_competitor_listing**](docs/CompetitorAPIApi.md#get_competitor_listing) | **GET** /api/v1/competitor/listing | Competitor Listing
 *ContactAPIApi* | [**check_disposable_email**](docs/ContactAPIApi.md#check_disposable_email) | **GET** /api/v1/contact/disposable-email | Disposable Email Checker
@@ -137,6 +138,7 @@ Class | Method | HTTP request | Description
  - [CompanyFundingResponse](docs/CompanyFundingResponse.md)
  - [CompanyUpdate](docs/CompanyUpdate.md)
  - [CompanyUpdatesResponse](docs/CompanyUpdatesResponse.md)
+ - [CompanyWebsiteResponse](docs/CompanyWebsiteResponse.md)
  - [CompetitorCompany](docs/CompetitorCompany.md)
  - [CompetitorListingResponse](docs/CompetitorListingResponse.md)
  - [CreateFeedRequest](docs/CreateFeedRequest.md)

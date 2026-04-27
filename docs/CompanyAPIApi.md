@@ -8,6 +8,7 @@ Method | HTTP request | Description
 [**get_company_funding**](CompanyAPIApi.md#get_company_funding) | **GET** /api/v1/company/funding | Company Funding
 [**get_company_logo**](CompanyAPIApi.md#get_company_logo) | **GET** /api/v1/company/logo | Company Logo
 [**get_company_updates**](CompanyAPIApi.md#get_company_updates) | **GET** /api/v1/company/updates | Company Updates
+[**get_company_website**](CompanyAPIApi.md#get_company_website) | **GET** /api/v1/company/website | Website Lookup
 [**get_employee_count**](CompanyAPIApi.md#get_employee_count) | **GET** /api/v1/company/employee-count | Employee Count
 
 
@@ -16,9 +17,9 @@ Method | HTTP request | Description
 
 Company Details
 
-Retrieve detailed company information including description, industry, executives, addresses, and for public companies: financials and stock info.
+Retrieve detailed company information including description, industry, current leadership team (executives), addresses, and for public companies: financials and stock info. Each executive entry carries a pre-filled `person_profile_url` you can follow to fetch their full Person Profile.
 
-**Cost:** 2 credits (4 credits if include_employee_count=true, +1 credit if follower_count=include)
+**Cost:** 3 credits (5 credits if include_employee_count=true, +1 credit if follower_count=include)
 
 ### Example
 
@@ -346,6 +347,95 @@ Name | Type | Description  | Notes
 | Status code | Description | Response headers |
 |-------------|-------------|------------------|
 **200** | Company updates |  * X-NinjaPear-Credit-Cost - Total cost of credits for this API call <br>  |
+**400** | Invalid parameters provided |  -  |
+**401** | Invalid API Key |  -  |
+**403** | Insufficient credits |  -  |
+**429** | Rate limited |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **get_company_website**
+> CompanyWebsiteResponse get_company_website(company_name, country_code=country_code, hint=hint)
+
+Website Lookup
+
+Resolve a company's name to its canonical website URL.
+
+**Cost:** 1 credit per request, charged whether or not a match is found.
+
+### Example
+
+* Bearer Authentication (bearerAuth):
+
+```python
+import ninjapear
+from ninjapear.models.company_website_response import CompanyWebsiteResponse
+from ninjapear.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to https://nubela.co
+# See configuration.py for a list of all supported configuration parameters.
+configuration = ninjapear.Configuration(
+    host = "https://nubela.co"
+)
+
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure Bearer authorization: bearerAuth
+configuration = ninjapear.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
+
+# Enter a context with an instance of the API client
+with ninjapear.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = ninjapear.CompanyAPIApi(api_client)
+    company_name = 'Stripe' # str | The name of the company to look up.
+    country_code = 'us' # str | Optional ISO 3166-1 alpha-2 2-letter country code used to bias the search geographically (e.g. `us`, `gb`, `de`, `sg`). (optional)
+    hint = 'fintech payments platform' # str | Provide a hint to differentiate similarly named companies in the same country. (optional)
+
+    try:
+        # Website Lookup
+        api_response = api_instance.get_company_website(company_name, country_code=country_code, hint=hint)
+        print("The response of CompanyAPIApi->get_company_website:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling CompanyAPIApi->get_company_website: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **company_name** | **str**| The name of the company to look up. | 
+ **country_code** | **str**| Optional ISO 3166-1 alpha-2 2-letter country code used to bias the search geographically (e.g. &#x60;us&#x60;, &#x60;gb&#x60;, &#x60;de&#x60;, &#x60;sg&#x60;). | [optional] 
+ **hint** | **str**| Provide a hint to differentiate similarly named companies in the same country. | [optional] 
+
+### Return type
+
+[**CompanyWebsiteResponse**](CompanyWebsiteResponse.md)
+
+### Authorization
+
+[bearerAuth](../README.md#bearerAuth)
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Resolved company website |  * X-NinjaPear-Credit-Cost - Total cost of credits for this API call <br>  |
+**404** | No website match could be found for the given company name. Credits are still charged. |  * X-NinjaPear-Credit-Cost - Total cost of credits for this API call <br>  |
 **400** | Invalid parameters provided |  -  |
 **401** | Invalid API Key |  -  |
 **403** | Insufficient credits |  -  |

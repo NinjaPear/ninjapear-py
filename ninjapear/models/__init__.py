@@ -20,6 +20,7 @@ from ninjapear.models.company_details_response import CompanyDetailsResponse
 from ninjapear.models.company_funding_response import CompanyFundingResponse
 from ninjapear.models.company_update import CompanyUpdate
 from ninjapear.models.company_updates_response import CompanyUpdatesResponse
+from ninjapear.models.company_website_response import CompanyWebsiteResponse
 from ninjapear.models.competitor_company import CompetitorCompany
 from ninjapear.models.competitor_listing_response import CompetitorListingResponse
 from ninjapear.models.create_feed_request import CreateFeedRequest

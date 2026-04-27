@@ -10,6 +10,7 @@ docs/CompanyDetailsResponse.md
 docs/CompanyFundingResponse.md
 docs/CompanyUpdate.md
 docs/CompanyUpdatesResponse.md
+docs/CompanyWebsiteResponse.md
 docs/CompetitorAPIApi.md
 docs/CompetitorCompany.md
 docs/CompetitorListingResponse.md
@@ -63,6 +64,7 @@ ninjapear/models/company_details_response.py
 ninjapear/models/company_funding_response.py
 ninjapear/models/company_update.py
 ninjapear/models/company_updates_response.py
+ninjapear/models/company_website_response.py
 ninjapear/models/competitor_company.py
 ninjapear/models/competitor_listing_response.py
 ninjapear/models/create_feed_request.py
@@ -97,5 +99,5 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
-test/test_work_email_response.py
+test/test_company_website_response.py
 tox.ini

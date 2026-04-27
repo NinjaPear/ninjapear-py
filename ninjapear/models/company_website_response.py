@@ -18,30 +18,17 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
 from typing import Any, ClassVar, Dict, List, Optional
 from typing import Optional, Set
 from typing_extensions import Self
 
-class Executive(BaseModel):
+class CompanyWebsiteResponse(BaseModel):
     """
-    Executive
+    CompanyWebsiteResponse
     """ # noqa: E501
-    name: Optional[StrictStr] = Field(default=None, description="Full name of the executive")
-    title: Optional[StrictStr] = Field(default=None, description="Job title")
-    role: Optional[StrictStr] = Field(default=None, description="Normalized role type")
-    person_profile_url: Optional[StrictStr] = Field(default=None, description="Pre-filled URL to the Person Profile endpoint. Authenticate with your bearer token to fetch the executive's full profile. Null when first name or company website is missing.")
-    __properties: ClassVar[List[str]] = ["name", "title", "role", "person_profile_url"]
-
-    @field_validator('role')
-    def role_validate_enum(cls, value):
-        """Validates the enum"""
-        if value is None:
-            return value
-
-        if value not in set(['CEO', 'CFO', 'COO', 'CTO', 'CMO', 'PRESIDENT', 'VICE_PRESIDENT', 'DIRECTOR', 'BOARD_MEMBER', 'CHAIRMAN', 'FOUNDER', 'OTHER']):
-            raise ValueError("must be one of enum values ('CEO', 'CFO', 'COO', 'CTO', 'CMO', 'PRESIDENT', 'VICE_PRESIDENT', 'DIRECTOR', 'BOARD_MEMBER', 'CHAIRMAN', 'FOUNDER', 'OTHER')")
-        return value
+    website: Optional[StrictStr] = Field(default=None, description="The resolved canonical website URL.")
+    __properties: ClassVar[List[str]] = ["website"]
 
     model_config = ConfigDict(
         populate_by_name=True,
@@ -61,7 +48,7 @@ class Executive(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of Executive from a JSON string"""
+        """Create an instance of CompanyWebsiteResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -82,26 +69,11 @@ class Executive(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # set to None if title (nullable) is None
-        # and model_fields_set contains the field
-        if self.title is None and "title" in self.model_fields_set:
-            _dict['title'] = None
-
-        # set to None if role (nullable) is None
-        # and model_fields_set contains the field
-        if self.role is None and "role" in self.model_fields_set:
-            _dict['role'] = None
-
-        # set to None if person_profile_url (nullable) is None
-        # and model_fields_set contains the field
-        if self.person_profile_url is None and "person_profile_url" in self.model_fields_set:
-            _dict['person_profile_url'] = None
-
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of Executive from a dict"""
+        """Create an instance of CompanyWebsiteResponse from a dict"""
         if obj is None:
             return None
 
@@ -109,10 +81,7 @@ class Executive(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "name": obj.get("name"),
-            "title": obj.get("title"),
-            "role": obj.get("role"),
-            "person_profile_url": obj.get("person_profile_url")
+            "website": obj.get("website")
         })
         return _obj
 

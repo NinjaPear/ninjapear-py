@@ -41,6 +41,7 @@ __all__ = [
     "CompanyFundingResponse",
     "CompanyUpdate",
     "CompanyUpdatesResponse",
+    "CompanyWebsiteResponse",
     "CompetitorCompany",
     "CompetitorListingResponse",
     "CreateFeedRequest",
@@ -96,6 +97,7 @@ from ninjapear.models.company_details_response import CompanyDetailsResponse as 
 from ninjapear.models.company_funding_response import CompanyFundingResponse as CompanyFundingResponse
 from ninjapear.models.company_update import CompanyUpdate as CompanyUpdate
 from ninjapear.models.company_updates_response import CompanyUpdatesResponse as CompanyUpdatesResponse
+from ninjapear.models.company_website_response import CompanyWebsiteResponse as CompanyWebsiteResponse
 from ninjapear.models.competitor_company import CompetitorCompany as CompetitorCompany
 from ninjapear.models.competitor_listing_response import CompetitorListingResponse as CompetitorListingResponse
 from ninjapear.models.create_feed_request import CreateFeedRequest as CreateFeedRequest
